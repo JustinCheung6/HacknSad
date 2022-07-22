@@ -9,38 +9,53 @@ namespace Player
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
-        private CharacterController _cController;
+        #region Components
+        private CharacterController controller;
         
-        private PlayerInput input;
-        private InputAction moveInput;
+        //Player Input
+        private PlayerInput pInput;
+        private InputAction moveAction;
+        #endregion
+
+        private Vector3 moveInput = Vector3.zero;
+
+        //Playr Attributes
+
+        [Tooltip("Units per second")]
+        [SerializeField] private float moveSpeed = 1f; 
 
         private void Awake()
         {
-            _cController = GetComponent<CharacterController>();
-            input = GetComponent<PlayerInput>();
+            controller = GetComponent<CharacterController>();
+            pInput = GetComponent<PlayerInput>();
 
             //Get input actions from PlayerInput
-            moveInput = input.actions["Movement"];
+            moveAction = pInput.actions["Movement"];
 
         }
 
         private void OnEnable()
         {
             //Add Methods to input events
-            moveInput.performed += OnMove;
+            moveAction.performed += OnMove;
+            moveAction.canceled += OnMove;
+            UpdateManager.s.OnFixedUpdate += _FixedUpdate;
         }
 
         private void OnDisable()
         {
             //Remove Methods from input events
-            moveInput.performed -= OnMove;
+            moveAction.performed -= OnMove;
+            moveAction.canceled -= OnMove;
+            UpdateManager.s.OnFixedUpdate -= _FixedUpdate;
         }
 
         private void OnMove(InputAction.CallbackContext context)
         {
             try
             {
-                
+                Vector2 move = context.ReadValue<Vector2>();
+                moveInput = new Vector3(move.x, 0, move.y);
             }
             catch (NullReferenceException e)
             {
@@ -52,10 +67,23 @@ namespace Player
             }
         }
 
-
-        private void FixedUpdate()
+        private void _FixedUpdate()
         {
-            
+            try
+            {
+                if(moveInput != Vector3.zero)
+                {
+                    controller.Move(Time.fixedDeltaTime * moveSpeed * moveInput); 
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.LogException(e);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
     }
 }
