@@ -12,6 +12,13 @@ public class UpdateManager : MonoBehaviour
     public delegate void _OnFixedUpdate();
     public event _OnFixedUpdate OnFixedUpdate;
 
+    private void Awake()
+    {
+        if (s != null && s != this)
+            Debug.Log("There are multiple UpdateManagers");
+        s = this;
+    }
+
     private void OnEnable()
     {
         if (s != null && s != this)
