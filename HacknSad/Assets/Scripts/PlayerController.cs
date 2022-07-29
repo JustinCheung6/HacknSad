@@ -92,11 +92,17 @@ namespace Player
 
                     //Debug.Log("Cam: " + forward + " Move: " + movement);
 
-                    float rotation = cameraTrans.rotation.eulerAngles.y - RotationOffset(forward, movement);
+                    float rotation = cameraTrans.rotation.eulerAngles.y + RotationOffset(forward, movement);
 
                     //Debug.Log(rotation);
-
-                    transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+                    try
+                    {
+                        transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Error on: " + rotation);
+                    }
                 }
             }
             catch (NullReferenceException e)
@@ -112,18 +118,22 @@ namespace Player
         //Get angle distance between 2 points (camera forward, player direction)
         private float RotationOffset(Vector3 f, Vector3 p)
         {
-            //case where player is running forward
             if (f == p)
-                return 0f;
+                return 0;
+            else if (-f == p)
+                return 180;
 
-            Vector3 relative = cameraTrans.InverseTransformDirection(p);
+            float angleDist = ((f.x * p.x) + (f.z * p.z)) /
+                (Mathf.Sqrt(Mathf.Pow(f.x, 2) + Mathf.Pow(f.z, 2)) * Mathf.Sqrt(Mathf.Pow(p.x, 2) + Mathf.Pow(p.z, 2)));
 
-            float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
+            float angle = Mathf.Acos(angleDist) * Mathf.Rad2Deg;
 
-            //float angle = Mathf.Atan2(p.x - f.x, p.z - f.z) * Mathf.Rad2Deg;
-            //angle = (angle * 2) + 180;
+            float dot = -(f.x * p.z) + (f.z * p.x);
 
-            Debug.Log(angle);
+            if(dot < 0)
+                angle = -angle;
+
+            //Debug.Log(angle);
 
             return angle;
         }
