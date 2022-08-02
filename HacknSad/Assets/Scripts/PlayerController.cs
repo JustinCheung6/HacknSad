@@ -19,12 +19,27 @@ namespace Player
         private Animator animator;
         #endregion
 
+        #region Enum
+        private enum PlayerActions
+        {
+            Null = -1,
+            LtAtk = 0,
+            HvyAtk = 1,
+            Dodge = 2
+        }
+        #endregion
+
+        //Inputs
         private Vector3 moveInput = Vector3.zero;
+        private PlayerActions nextAction = PlayerActions.Null;
 
-        //Playr Attributes
-
+        //Player Attributes
         [Tooltip("Units per second")]
-        [SerializeField] private float moveSpeed = 1f; 
+        [SerializeField] private float moveSpeed = 1f;
+        [Tooltip("Time before player can make input to continue combo")]
+        [SerializeField] private float comboDelay = 0.2f;
+        [Tooltip("Whether comboDelay is a flat time in seconds (true), or a % of animation time (false)")]
+        [SerializeField] private bool cDelayFlatTime = false;
 
         private void Awake()
         {
@@ -137,5 +152,11 @@ namespace Player
 
             return angle;
         }
+
+
+        //To Do:
+        //Add in Animations and adjust their timings to flow properly (Have anticipation, contact, and follow-through)
+        //Have script to adjust their overall times in script
+        //Use comboDelay and cDelayFlatTime to adjust comboInputs of the system
     }
 }
