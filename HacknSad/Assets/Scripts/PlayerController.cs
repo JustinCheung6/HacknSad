@@ -28,14 +28,20 @@ namespace Player
             Dodge = 2
         }
         #endregion
-
-        //Inputs
+        
         private Vector3 moveInput = Vector3.zero;
         private PlayerActions nextAction = PlayerActions.Null;
 
         //Player Attributes
+        [Header("Player Movement")]
+        [Space(10)]
         [Tooltip("Units per second")]
         [SerializeField] private float moveSpeed = 1f;
+
+        [Space(20)]
+
+        [Header("Player Actions")]
+        [Space(10)]
         [Tooltip("Time before player can make input to continue combo")]
         [SerializeField] private float comboDelay = 0.2f;
         [Tooltip("Whether comboDelay is a flat time in seconds (true), or a % of animation time (false)")]
@@ -88,6 +94,7 @@ namespace Player
 
         private void _FixedUpdate()
         {
+
             try
             {
                 animator.SetBool("Moving", moveInput != Vector3.zero);

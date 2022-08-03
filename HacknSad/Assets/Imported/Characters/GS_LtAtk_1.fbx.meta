@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: 466ff33ddf5ae974aa6735b6e65ebb5f
+guid: fefc768a7980ac048844c8dde7c8762f
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: HvyAtk2_Move
+    second: LtAtk1_Move
   externalObjects: {}
   materials:
-    materialImportMode: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: HvyAtk2_Move
+      name: LtAtk1_Move
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 108
+      lastFrame: 48
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
